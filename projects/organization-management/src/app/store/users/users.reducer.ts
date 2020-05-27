@@ -5,7 +5,17 @@ import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { User } from 'ish-core/models/user/user.model';
 import { setErrorOn, setLoadingOn } from 'ish-core/utils/ngrx-creators';
 
-import { loadUserFail, loadUserSuccess, loadUsers, loadUsersFail, loadUsersSuccess, resetUsers } from './users.actions';
+import {
+  deleteUser,
+  deleteUserFail,
+  deleteUserSuccess,
+  loadUserFail,
+  loadUserSuccess,
+  loadUsers,
+  loadUsersFail,
+  loadUsersSuccess,
+  resetUsers,
+} from './users.actions';
 
 export const usersAdapter = createEntityAdapter<User>({
   selectId: user => user.login,
@@ -23,8 +33,8 @@ const initialState: UsersState = usersAdapter.getInitialState({
 
 export const usersReducer = createReducer(
   initialState,
-  setLoadingOn(loadUsers),
-  setErrorOn(loadUsersFail, loadUserFail),
+  setLoadingOn(loadUsers, deleteUser),
+  setErrorOn(loadUsersFail, loadUserFail, deleteUserFail),
   on(loadUsersSuccess, (state: UsersState, action) => {
     const { users } = action.payload;
 
@@ -39,6 +49,15 @@ export const usersReducer = createReducer(
 
     return {
       ...usersAdapter.upsertOne(user, state),
+      loading: false,
+      error: undefined,
+    };
+  }),
+  on(deleteUserSuccess, (state: UsersState, action) => {
+    const { user } = action.payload;
+
+    return {
+      ...usersAdapter.removeOne(user.login, state),
       loading: false,
       error: undefined,
     };

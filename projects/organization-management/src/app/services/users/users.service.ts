@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Link } from 'ish-core/models/link/link.model';
@@ -31,5 +31,18 @@ export class UsersService {
    */
   getUser(login: string): Observable<User> {
     return this.apiService.get(`customers/-/users/${login}`).pipe(map(UserMapper.fromData));
+  }
+
+  /**
+   * Deletes the data of a b2b user. The current user is supposed to have administrator rights.
+   * @param login  The login of the user.
+   * @returns      The user.
+   */
+  deleteUser(login: string) {
+    if (!login) {
+      return throwError('deleteUser() called without customerItemUserKey/login');
+    }
+
+    return this.apiService.delete(`customers/-/users/${login}`);
   }
 }

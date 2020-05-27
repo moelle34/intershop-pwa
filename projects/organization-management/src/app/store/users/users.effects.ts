@@ -7,11 +7,21 @@ import { debounceTime, exhaustMap, map, mapTo, withLatestFrom } from 'rxjs/opera
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
 import { logoutUser } from 'ish-core/store/customer/user';
-import { mapErrorToAction, whenTruthy } from 'ish-core/utils/operators';
+import { mapErrorToAction, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { UsersService } from '../../services/users/users.service';
 
-import { loadUserFail, loadUserSuccess, loadUsers, loadUsersFail, loadUsersSuccess, resetUsers } from './users.actions';
+import {
+  deleteUser,
+  deleteUserFail,
+  deleteUserSuccess,
+  loadUserFail,
+  loadUserSuccess,
+  loadUsers,
+  loadUsersFail,
+  loadUsersSuccess,
+  resetUsers,
+} from './users.actions';
 import { getSelectedUser } from './users.selectors';
 
 @Injectable()
@@ -66,4 +76,16 @@ export class UsersEffects {
   );
 
   resetUsersAfterLogout$ = createEffect(() => this.actions$.pipe(ofType(logoutUser), mapTo(resetUsers())));
+
+  deleteUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteUser),
+      mapToPayloadProperty('user'),
+      exhaustMap(user =>
+        this.usersService
+          .deleteUser(user.email)
+          .pipe(map(() => deleteUserSuccess({ user }), mapErrorToAction(deleteUserFail)))
+      )
+    )
+  );
 }

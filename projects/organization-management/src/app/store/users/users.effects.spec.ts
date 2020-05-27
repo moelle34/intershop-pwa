@@ -14,7 +14,7 @@ import { CoreStoreModule } from 'ish-core/store/core/core-store.module';
 import { UsersService } from '../../services/users/users.service';
 import { OrganizationManagementStoreModule } from '../organization-management-store.module';
 
-import { loadUsers, loadUsersSuccess } from './users.actions';
+import { deleteUser, loadUsers, loadUsersSuccess } from './users.actions';
 import { UsersEffects } from './users.effects';
 
 @Component({ template: 'dummy' })
@@ -33,6 +33,8 @@ describe('Users Effects', () => {
     usersService = mock(UsersService);
     when(usersService.getUsers()).thenReturn(of(users));
     when(usersService.getUser(anything())).thenReturn(of(users[0]));
+    when(usersService.getUsers()).thenReturn(of(users));
+    when(usersService.deleteUser(anything())).thenReturn(of(true));
 
     TestBed.configureTestingModule({
       declarations: [DummyComponent],
@@ -117,6 +119,31 @@ describe('Users Effects', () => {
               },
             ],
           }
+        `);
+        done();
+      });
+    });
+  });
+
+  describe('deleteUser$', () => {
+    const user = { email: 'pmiller@test.intershop.de' } as User;
+
+    it('should call the service for delete user', done => {
+      actions$ = of(deleteUser({ user }));
+
+      effects.deleteUser$.subscribe(() => {
+        verify(usersService.deleteUser(anything())).once();
+        done();
+      });
+    });
+
+    it('should delete user when triggered', done => {
+      actions$ = of(deleteUser({ user }));
+
+      effects.deleteUser$.subscribe(action => {
+        expect(action).toMatchInlineSnapshot(`
+          [Users API] Delete User Success:
+            user: {"email":"pmiller@test.intershop.de"}
         `);
         done();
       });

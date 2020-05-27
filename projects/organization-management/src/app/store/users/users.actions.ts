@@ -14,3 +14,9 @@ export const loadUserFail = createAction('[Users API] Load User Fail', httpError
 export const loadUserSuccess = createAction('[Users API] Load User Success', payload<{ user: User }>());
 
 export const resetUsers = createAction('[Users] Reset Users');
+
+export const deleteUser = createAction('[Users API] Delete User', payload<{ user: User }>());
+
+export const deleteUserFail = createAction('[Users API] Delete User Fail', httpError());
+
+export const deleteUserSuccess = createAction('[Users API] Delete User Success', payload<{ user: User }>());
