@@ -1,6 +1,8 @@
+import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { ApiService } from 'ish-core/services/api/api.service';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 
@@ -9,10 +11,21 @@ import { AddressService } from './address.service';
 describe('Address Service', () => {
   let addressService: AddressService;
   let apiService: ApiService;
+  let appFacade: AppFacade;
 
   beforeEach(() => {
     apiService = mock(ApiService);
-    addressService = new AddressService(instance(apiService));
+    appFacade = mock(AppFacade);
+
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: ApiService, useFactory: () => instance(apiService) },
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+      ],
+    });
+    when(appFacade.customerRestResource$).thenReturn(of('customers'));
+
+    addressService = TestBed.inject(AddressService);
   });
 
   it("should get addresses data when 'getCustomerAddresses' is called", done => {

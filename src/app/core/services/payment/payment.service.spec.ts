@@ -3,6 +3,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 
+import { AppFacade } from 'ish-core/facades/app.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
 import { Locale } from 'ish-core/models/locale/locale.model';
 import { PaymentInstrument } from 'ish-core/models/payment-instrument/payment-instrument.model';
@@ -15,6 +16,7 @@ import { PaymentService } from './payment.service';
 describe('Payment Service', () => {
   let paymentService: PaymentService;
   let apiService: ApiService;
+  let appFacade: AppFacade;
 
   const basketMock = {
     data: {
@@ -67,12 +69,19 @@ describe('Payment Service', () => {
 
   beforeEach(() => {
     apiService = mock(ApiService);
+    appFacade = mock(AppFacade);
+
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiService) },
-        provideMockStore({ selectors: [{ selector: getCurrentLocale, value: { lang: 'en_US' } as Locale }] }),
+        { provide: AppFacade, useFactory: () => instance(appFacade) },
+        provideMockStore({
+          selectors: [{ selector: getCurrentLocale, value: { lang: 'en_US' } as Locale }],
+        }),
       ],
     });
+    when(appFacade.customerRestResource$).thenReturn(of('customers'));
+
     paymentService = TestBed.inject(PaymentService);
   });
 
