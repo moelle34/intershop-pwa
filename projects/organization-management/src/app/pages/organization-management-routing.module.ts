@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { UsersDetailPageComponent } from './users-detail/users-detail-page.component';
+import { UserCreatePageComponent } from './user-create/user-create-page.component';
+import { UserEditProfilePageComponent } from './user-edit-profile/user-edit-profile-page.component';
+import { UserDetailPageComponent } from './users-detail/user-detail-page.component';
 import { UsersPageComponent } from './users/users-page.component';
 
 const routes: Routes = [
@@ -11,11 +13,13 @@ const routes: Routes = [
     component: UsersPageComponent,
     data: { breadcrumbData: [{ key: 'account.organization.user_management' }] },
   },
+  { path: 'users/create', component: UserCreatePageComponent },
   {
     path: 'users/:B2BCustomerLogin',
-    component: UsersDetailPageComponent,
+    component: UserDetailPageComponent,
     data: { breadcrumbData: [{ key: 'account.organization.user_management.user_detail' }] },
   },
+  { path: 'users/:B2BCustomerLogin/profile', component: UserEditProfilePageComponent },
 ];
 
 @NgModule({

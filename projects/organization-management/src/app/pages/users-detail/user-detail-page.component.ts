@@ -6,11 +6,11 @@ import { User } from 'ish-core/models/user/user.model';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 
 @Component({
-  selector: 'ish-users-detail-page',
-  templateUrl: './users-detail-page.component.html',
+  selector: 'ish-user-detail-page',
+  templateUrl: './user-detail-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UsersDetailPageComponent implements OnInit {
+export class UserDetailPageComponent implements OnInit {
   user$: Observable<User>;
 
   constructor(private organizationManagementFacade: OrganizationManagementFacade) {}

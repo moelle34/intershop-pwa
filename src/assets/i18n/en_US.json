@@ -2788,6 +2788,7 @@
   "account.user.widget.monthly_spend_limit.label": "Monthly spend limit",
   "account.user.widget.order_spend_limit.label": "Order spend limit",
   "account.user.widget.view_all_users.link": "View all Users",
+  "account.user.update_profile.heading": "Edit User Profile",
   "account.user.new.heading": "Create New User",
   "account.user.new.active.label": "Active",
   "account.user.new.active.yes.text": "yes",
