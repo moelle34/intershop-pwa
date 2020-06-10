@@ -7,11 +7,16 @@ describe('User Role Mapper', () => {
       const userRoleData = {
         fixed: true,
         permissions: [
-          'Assign a cost object to a basket',
-          'Assign a cost object to a basket line item',
-          'Create Quotes',
-          'Manage Purchases',
-          'View cost objects',
+          {
+            permissionDisplayName: 'Permission1',
+            permissionID: 'Permission1ID',
+            type: 'RolePermission',
+          },
+          {
+            permissionDisplayName: 'Permission2',
+            permissionID: 'Permission2ID',
+            type: 'RolePermission',
+          },
         ],
         roleDisplayName: 'Buyer',
         roleID: 'APP_B2B_BUYER',
