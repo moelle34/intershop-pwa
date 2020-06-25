@@ -9,7 +9,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { setBreadcrumbData } from 'ish-core/store/core/viewconf';
-import { getLoggedInCustomer, logoutUser, updateUserSuccess } from 'ish-core/store/customer/user';
+import { getLoggedInCustomer, logoutUser } from 'ish-core/store/customer/user';
 import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { UsersService } from '../../services/users/users.service';
@@ -29,6 +29,7 @@ import {
   resetUsers,
   updateUser,
   updateUserFail,
+  updateUserSuccess,
 } from './users.actions';
 import { getSelectedUser } from './users.selectors';
 

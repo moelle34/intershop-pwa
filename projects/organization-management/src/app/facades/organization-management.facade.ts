@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { User } from 'ish-core/models/user/user.model';
-import { getLoggedInCustomer } from 'ish-core/store/customer/user';
 
 import {
   addUser,
-  deleteUser,
   getSelectedUser,
   getUsers,
   getUsersError,
@@ -28,8 +26,6 @@ export class OrganizationManagementFacade {
   usersLoading$ = this.store.pipe(select(getUsersLoading));
   selectedUser$ = this.store.pipe(select(getSelectedUser));
 
-  customer$ = this.store.pipe(select(getLoggedInCustomer));
-
   addUser(user: User) {
     this.store.dispatch(
       addUser({
@@ -44,9 +40,5 @@ export class OrganizationManagementFacade {
         user,
       })
     );
-  }
-
-  deleteUser(user: User) {
-    this.store.dispatch(deleteUser({ user }));
   }
 }

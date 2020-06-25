@@ -62,8 +62,8 @@ describe('User Edit Profile Page Component', () => {
     });
 
     when(organizationManagementFacade.selectedUser$).thenReturn(of(user));
-    when(organizationManagementFacade.loading$).thenReturn(of(false));
-    when(organizationManagementFacade.userError$).thenReturn(of());
+    when(organizationManagementFacade.usersLoading$).thenReturn(of(false));
+    when(organizationManagementFacade.usersError$).thenReturn(of());
   });
 
   it('should be created', () => {

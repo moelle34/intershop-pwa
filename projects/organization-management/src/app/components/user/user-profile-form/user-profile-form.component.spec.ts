@@ -4,9 +4,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { CustomValidators } from 'ng2-validation';
+import { of } from 'rxjs';
+import { instance, mock, when } from 'ts-mockito';
 
-import { coreReducers } from 'ish-core/store/core/core-store.module';
-import { ngrxTesting } from 'ish-core/utils/dev/ngrx-testing';
+import { AppFacade } from 'ish-core/facades/app.facade';
+import { Locale } from 'ish-core/models/locale/locale.model';
 import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { InputComponent } from 'ish-shared/forms/components/input/input.component';
 import { SelectTitleComponent } from 'ish-shared/forms/components/select-title/select-title.component';
@@ -18,21 +20,20 @@ describe('User Profile Form Component', () => {
   let fixture: ComponentFixture<UserProfileFormComponent>;
   let element: HTMLElement;
   let fb: FormBuilder;
+  let appFacade: AppFacade;
 
   beforeEach(async(() => {
+    appFacade = mock(AppFacade);
+
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        RouterTestingModule,
-        TranslateModule.forRoot(),
-        ngrxTesting({ reducers: coreReducers }),
-      ],
+      imports: [ReactiveFormsModule, RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         MockComponent(ErrorMessageComponent),
         MockComponent(InputComponent),
         MockComponent(SelectTitleComponent),
         UserProfileFormComponent,
       ],
+      providers: [{ provide: AppFacade, useFactory: () => instance(appFacade) }],
     }).compileComponents();
   }));
 
@@ -41,6 +42,7 @@ describe('User Profile Form Component', () => {
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     fb = TestBed.inject(FormBuilder);
+    when(appFacade.currentLocale$).thenReturn(of({ lang: 'en_US' } as Locale));
 
     component.form = fb.group({
       email: ['', [Validators.required, CustomValidators.email]],

@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { UserCreatePageComponent } from './user-create/user-create-page.component';
+import { UserDetailPageComponent } from './user-detail/user-detail-page.component';
 import { UserEditProfilePageComponent } from './user-edit-profile/user-edit-profile-page.component';
-import { UserDetailPageComponent } from './users-detail/user-detail-page.component';
 import { UsersPageComponent } from './users/users-page.component';
 
 const routes: Routes = [

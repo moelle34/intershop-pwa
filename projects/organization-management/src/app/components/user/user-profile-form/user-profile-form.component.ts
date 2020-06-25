@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { determineSalutations } from 'ish-shared/forms/utils/form-utils';
   templateUrl: './user-profile-form.component.html',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class UserProfileFormComponent implements OnInit {
+export class UserProfileFormComponent implements OnInit, OnDestroy {
   @Input() form: FormGroup;
   @Input() error: HttpError;
 
@@ -34,5 +34,10 @@ export class UserProfileFormComponent implements OnInit {
       this.currentCountryCode = locale.lang.slice(3);
       this.titles = locale.lang ? determineSalutations(this.currentCountryCode) : undefined;
     });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

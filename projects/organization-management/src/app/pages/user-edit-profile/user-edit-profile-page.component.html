@@ -1,5 +1,5 @@
-<div *ngIf="profile && titles">
-  <h1>{{ 'account.user.edit.heading' | translate }} - {{ user.firstName }} {{ user.lastName }}</h1>
+<div *ngIf="profile">
+  <h1>{{ 'account.user.update_profile.heading' | translate }} - {{ user.firstName }} {{ user.lastName }}</h1>
   <form [formGroup]="profile" (ngSubmit)="submitForm()" class="form-horizontal" novalidate="novalidate">
     <ish-user-profile-form [form]="profile"></ish-user-profile-form>
     <div class="row">

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { OrganizationManagementFacade } from '../../facades/organization-managem
   templateUrl: './user-edit-profile-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserEditProfilePageComponent implements OnInit {
+export class UserEditProfilePageComponent implements OnInit, OnDestroy {
   currentLocale$: Observable<Locale>;
   loading$: Observable<boolean>;
   userError$: Observable<HttpError>;
@@ -43,14 +43,19 @@ export class UserEditProfilePageComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   editUserProfileForm(userProfile: User) {
     this.profile = this.fb.group({
-      title: [userProfile.title ? userProfile.title : '', [Validators.required]],
+      title: [userProfile.title ? userProfile.title : ''],
       firstName: [userProfile.firstName, [Validators.required]],
       lastName: [userProfile.lastName, [Validators.required]],
       phone: [userProfile.phoneHome],
       birthday: [userProfile.birthday],
-      preferredLanguage: [userProfile.preferredLanguage, [Validators.required]],
+      preferredLanguage: [userProfile.preferredLanguage],
     });
   }
 

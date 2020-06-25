@@ -1,5 +1,8 @@
 <h1>
-  {{ 'account.organization.user_management' | translate }}
+  {{ 'account.organization.user_management' | translate
+  }}<a routerLink="create" class="btn btn-secondary" data-testing-id="add-user-link">{{
+    'account.user.new.button.create.label' | translate
+  }}</a>
 </h1>
 
 <ish-error-message [error]="error$ | async"></ish-error-message>
